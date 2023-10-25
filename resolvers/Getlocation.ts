@@ -15,7 +15,14 @@ export const  getlocation =async (id: string): Promise<Location> => {
                    
         }
 
-        const existe = await LocationCollection.findOne({_id: parseInt(id)})
+        const ID:number = parseInt(id)
+
+        if(ID<0){
+            throw String("La pagina es menor a 0, paginacion imposible")
+        }
+
+
+        const existe = await LocationCollection.findOne({_id: ID})
 
         if(!existe){
             const response = await  fetch(`${url}/${id}`)
@@ -41,12 +48,12 @@ export const  getlocation =async (id: string): Promise<Location> => {
                 created:	day
             }
 
-            console.log(`Fetch realizado.\nLocation: ${finaldata.name}, añadido\n`)
+            console.log(`Fetch realizado.\nLocation: ${finaldata.dimension}, añadido\n`)
             await LocationCollection.insertOne(finaldata as Location)
             return finaldata
 
         }else{
-            console.log(`Fetch no necesario.\nLocation: ${existe.name}, existe\n`)
+            console.log(`Fetch no necesario.\nLocation: ${existe.dimension}, existe\n`)
             return existe
         }
 

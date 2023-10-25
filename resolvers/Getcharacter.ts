@@ -13,8 +13,13 @@ export const  getcharacter =async (id: string): Promise<Character> => {
             throw String("characters, eliminados.")       
         }
 
+        const ID:number = parseInt(id)
 
-        const existe = await CharacterCollection.findOne({_id: parseInt(id)})
+        if(ID<0){
+            throw String("La pagina es menor a 0, paginacion imposible")
+        }
+
+        const existe = await CharacterCollection.findOne({_id: ID})
 
         if(!existe){
 
@@ -53,6 +58,7 @@ export const  getcharacter =async (id: string): Promise<Character> => {
             console.log(`Fetch realizado.\nCharacter: ${finaldata.name}, añadido`)
             await CharacterCollection.insertOne(finaldata as Character)
             return finaldata
+
         }else{
             console.log(`Fetch no necesario.\nCharacter: ${existe.name}, existe\n`)
             return existe
